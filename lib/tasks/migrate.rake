@@ -61,16 +61,16 @@ task migrate: :environment do
     subreports << Fedora::Migrate::Tasks.migrate_file_set(pid, reload: true)
   end
   assets[:admin_sets].each do |pid|
-    subreports << Fedora::Migrate::Tasks.migrate_administrative_set(pid, reload: true)
+    #subreports << Fedora::Migrate::Tasks.migrate_administrative_set(pid, reload: true)
   end
   assets[:pages].each do |pid|
     subreports << Fedora::Migrate::Tasks.migrate_work(pid, reload: true)
   end
   assets[:works].each do |pid|
-    subreports << Fedora::Migrate::Tasks.migrate_work(pid, reload: true)
+    subreports << Fedora::Migrate::Tasks.migrate_work(pid, reload: true, convert: 'descMetadata')
   end
   assets[:collections].each do |pid|
-    subreports << Fedora::Migrate::Tasks.migrate_collection(pid, reload: true)
+    subreports << Fedora::Migrate::Tasks.migrate_collection(pid, reload: true, convert: 'descMetadata')
   end
   subreports.compact!
   report = FedoraMigrate::MigrationReport.new
