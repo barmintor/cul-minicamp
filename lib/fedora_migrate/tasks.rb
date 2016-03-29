@@ -2,6 +2,7 @@ module Fedora
   module Migrate
     module Tasks
       def self.pid_to_slug(pid)
+        return nil if pid.nil?
         pid.split(':').last
       end
       def self.connection
@@ -19,10 +20,11 @@ module Fedora
         delete_resource("#{resource}/fcr:tombstone")
         solr_connection.delete_by_query("id:\"#{resource}\"", params: { 'softCommit' => true }) unless solr_connection.nil?
       end
-      def self.destroy_previously_migrated(pid, options={})
-        return unless options[:reload]
-        container = options[:container]
-        resource = (container.nil?) ? "#{pid_to_slug(pid)}" : "#{pid_to_slug(container)}/#{pid_to_slug(pid)}"
+      def self.destroy_previously_migrated(pid, container=nil)
+        prefix = ActiveFedora.config.credentials[:base_path]
+        path_segs = [prefix, pid_to_slug(container), pid_to_slug(pid)].compact!
+        resource = path_segs.join('/')
+        resource.sub!(/^\//,'')
         destroy_resource(resource)
       end
       def self.migrate_common(pid, options={})
