@@ -44,6 +44,16 @@ module FedoraMigrate::Hooks
     # additional actions as needed
   end
 
+  # Called from FedoraMigrate::Works::StructureMover
+  def before_structure_migration
+    # additional actions as needed
+  end
+
+  # Called from FedoraMigrate::Works::StructureMover
+  def after_structure_migration
+    # additional actions as needed
+  end
+
 end
 
 desc "Delete all the content in Fedora 4"
