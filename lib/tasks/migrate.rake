@@ -67,6 +67,8 @@ task migrate: :environment do
   asset_map = YAML.load(open("#{Rails.root}/config/fixtures.yml"))
   assets = asset_map[:'1667751']
   subreports = []
+
+  Hydra::Derivatives.fits_path = '/usr/local/fits/fits-0.6.2/fits.sh'
   assets[:generic_files].each do |pid|
     subreports << Fedora::Migrate::Tasks.migrate_file_set(pid, reload: true)
   end

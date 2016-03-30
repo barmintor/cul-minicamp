@@ -1,6 +1,7 @@
 module FedoraMigrate
   module Works
     class FileSetMover < FedoraMigrate::ObjectMover
+      FITS_PARSER = Hydra::Works::Characterization::FitsDatastream
       ORIGINAL_FILE_DSID = 'content'
       PROVO_INVERSE = 'http://www.w3.org/ns/prov-o-inverses#'
       def pcdm_use_from_rels(rels_ext_ds)
@@ -27,6 +28,16 @@ module FedoraMigrate
           target.original_file = original_file
           save
           report.content_datastreams << ContentDatastreamReport.new(ORIGINAL_FILE_DSID, mover.migrate)
+          tfile = Tempfile.new(ORIGINAL_FILE_DSID, encoding: 'ascii-8bit')
+          begin
+            tfile.write(source.datastreams[ORIGINAL_FILE_DSID].content)
+            tfile.close
+            Hydra::Works::CharacterizationService.run(target, tfile.path)
+            target.save
+            target.create_derivatives
+          ensure
+            tfile.close!
+          end
         end
       end
     end
