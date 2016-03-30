@@ -19,32 +19,35 @@ module Fedora
         delete_resource("#{resource}/fcr:tombstone")
         solr_connection.delete_by_query("id:\"#{resource}\"", params: { 'softCommit' => true }) unless solr_connection.nil?
       end
-      def self.destroy_previously_migrated(pid, container=nil)
+      def self.destroy_previously_migrated(pid, options={})
+        return unless options[:reload]
+        container = options[:container]
         resource = (container.nil?) ? "#{pid_to_slug(pid)}" : "#{pid_to_slug(container)}/#{pid_to_slug(pid)}"
         destroy_resource(resource)
       end
-      def self.migrate_common(pid)
+      def self.migrate_common(pid, options={})
         puts "would have migrated #{pid}"
+        nil
       end
-      def self.migrate_administrative_set(pid, reload=false, container=nil)
-        destroy_previously_migrated(pid,container) if reload
+      def self.migrate_administrative_set(pid, options={})
+        destroy_previously_migrated(pid,options[:container]) if options[:reload]
         # do the migration
-        migrate_common(pid)
+        migrate_common(pid, options)
       end
-      def self.migrate_file_set(pid, reload=false, container=nil)
-        destroy_previously_migrated(pid,container) if reload
+      def self.migrate_file_set(pid, options={})
+        destroy_previously_migrated(pid,options[:container]) if options[:reload]
         # do the migration
-        migrate_common(pid)
+        migrate_common(pid, options)
       end
-      def self.migrate_work(pid, reload=false, container=nil)
-        destroy_previously_migrated(pid,container) if reload
+      def self.migrate_work(pid, options={})
+        destroy_previously_migrated(pid,options[:container]) if options[:reload]
         # do the migration
-        migrate_common(pid)
+        migrate_common(pid, options)
       end
-      def self.migrate_collection(pid, reload=false, container=nil)
-        destroy_previously_migrated(pid,container) if reload
+      def self.migrate_collection(pid, options={})
+        destroy_previously_migrated(pid,options[:container]) if options[:reload]
         # do the migration
-        migrate_common(pid)
+        migrate_common(pid, options)
       end
     end
   end
