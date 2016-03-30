@@ -4,6 +4,7 @@ module FedoraMigrate
       def migrate_datastreams
         migrate_content_datastreams
         migrate_ocr
+        migrate_structure
         migrate_permissions
         migrate_dates
       end
@@ -15,6 +16,13 @@ module FedoraMigrate
           target_file = ocr_file_set.build_extracted_text
           ocr_file_set.original_file = target_file
           mover = FedoraMigrate::DatastreamMover.new(ds, target_file, options)
+          report.content_datastreams << ContentDatastreamReport.new(ds, mover.migrate)
+        end
+      end
+      def migrate_structure
+        ds = source.datastreams['structMetadata']
+        if ds
+          mover = FedoraMigrate::Works::StructureMover.new(source, target, options)
           report.content_datastreams << ContentDatastreamReport.new(ds, mover.migrate)
         end
       end
