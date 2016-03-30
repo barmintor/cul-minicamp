@@ -67,10 +67,10 @@ task migrate: :environment do
     subreports << Fedora::Migrate::Tasks.migrate_work(pid, reload: true)
   end
   assets[:works].each do |pid|
-    subreports << Fedora::Migrate::Tasks.migrate_work(pid, reload: true)
+    subreports << Fedora::Migrate::Tasks.migrate_work(pid, reload: true, convert: 'desMetadata')
   end
   assets[:collections].each do |pid|
-    subreports << Fedora::Migrate::Tasks.migrate_collection(pid, reload: true)
+    subreports << Fedora::Migrate::Tasks.migrate_collection(pid, reload: true, convert: 'desMetadata')
   end
   subreports.compact!
   report = FedoraMigrate::MigrationReport.new
