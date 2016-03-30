@@ -49,7 +49,7 @@ module Fedora
       def self.migrate_work(pid, options={})
         destroy_previously_migrated(pid,options[:container]) if options[:reload]
         # do the migration
-        migrate_common(pid, options)
+        migrate_common(pid, options, FedoraMigrate::Works::WorkMover)
       end
       def self.migrate_collection(pid, options={})
         destroy_previously_migrated(pid,options[:container]) if options[:reload]
