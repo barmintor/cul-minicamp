@@ -27,10 +27,10 @@ module Fedora
         resource.sub!(/^\//,'')
         destroy_resource(resource)
       end
-      def self.migrate_common(pid, options={})
+      def self.migrate_common(pid, options = {}, mover_class=FedoraMigrate::ObjectMover)
         source = FedoraMigrate.source.connection.find(pid)
         target = nil
-        mover = FedoraMigrate::ObjectMover.new(source, target, options)
+        mover = mover_class.new(source, target, options)
         mover.migrate
         target = mover.target
         FedoraMigrate::RelsExtDatastreamMover.new(source, target, options).migrate
@@ -44,7 +44,7 @@ module Fedora
       def self.migrate_file_set(pid, options={})
         destroy_previously_migrated(pid,options[:container]) if options[:reload]
         # do the migration
-        migrate_common(pid, options)
+        migrate_common(pid, options, FedoraMigrate::Works::FileSetMover)
       end
       def self.migrate_work(pid, options={})
         destroy_previously_migrated(pid,options[:container]) if options[:reload]
