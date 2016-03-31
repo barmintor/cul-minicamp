@@ -28,7 +28,12 @@ module Fedora
         destroy_resource(resource)
       end
       def self.migrate_common(pid, options={})
-        puts "would have migrated #{pid}"
+        source = FedoraMigrate.source.connection.find(pid)
+        target = nil
+        mover = FedoraMigrate::ObjectMover.new(source, target, options)
+        mover.migrate
+        target = mover.target
+        FedoraMigrate::RelsExtDatastreamMover.new(source, target, options).migrate
         nil
       end
       def self.migrate_administrative_set(pid, options={})
