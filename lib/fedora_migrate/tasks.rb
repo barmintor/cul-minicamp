@@ -33,7 +33,8 @@ module Fedora
         mover = mover_class.new(source, target, options)
         mover.migrate
         target = mover.target
-        FedoraMigrate::RelsExtDatastreamMover.new(source, target, options).migrate
+        FedoraMigrate::Works::RelsExtDatastreamMover.new(source, target, options).migrate
+        FedoraMigrate::Works::MembersMover.new(source, target, options).migrate
         nil
       end
       def self.migrate_administrative_set(pid, options={})
