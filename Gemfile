@@ -6,6 +6,7 @@ gem 'rails', '4.2.1'
 
 gem 'hydra', '9.1.0'
 gem 'hydra-works'
+gem 'curation_concerns'
 gem 'fedora-migrate'
 # Use sqlite3 as the database for Active Record
 gem 'sqlite3'
@@ -54,3 +55,10 @@ group :development, :test do
   gem 'rspec-rails'
   gem 'jettywrapper'
 end
+
+group :development, :test do
+  gem 'solr_wrapper', '>= 0.3'
+end
+
+gem 'rsolr', '~> 1.0.6'
+gem 'globalid'

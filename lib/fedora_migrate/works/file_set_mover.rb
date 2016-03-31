@@ -24,17 +24,20 @@ module FedoraMigrate
           else
             original_file = target.build_original_file
           end
-          mover = FedoraMigrate::DatastreamMover.new(source.datastreams[ORIGINAL_FILE_DSID], original_file, options)
-          target.original_file = original_file
-          save
-          report.content_datastreams << ContentDatastreamReport.new(ORIGINAL_FILE_DSID, mover.migrate)
           tfile = Tempfile.new(ORIGINAL_FILE_DSID, encoding: 'ascii-8bit')
           begin
             tfile.write(source.datastreams[ORIGINAL_FILE_DSID].content)
             tfile.close
+            open(tfile.path) do |io|
+              opts = options.merge(content: io)
+              mover = FedoraMigrate::Works::OriginalFileMover.new(source.datastreams[ORIGINAL_FILE_DSID], original_file, opts)
+              target.original_file = original_file
+              save
+              report.content_datastreams << ContentDatastreamReport.new(ORIGINAL_FILE_DSID, mover.migrate)
+            end
             Hydra::Works::CharacterizationService.run(target, tfile.path)
             target.save
-            target.create_derivatives
+            target.create_derivatives(tfile.path)
           ensure
             tfile.close!
           end
