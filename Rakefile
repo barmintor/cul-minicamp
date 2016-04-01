@@ -5,3 +5,5 @@ require File.expand_path('../config/application', __FILE__)
 require 'fedora_migrate/tasks'
 require 'fedora_migrate/works'
 Rails.application.load_tasks
+
+require 'solr_wrapper/rake_task'

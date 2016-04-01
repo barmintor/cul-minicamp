@@ -54,3 +54,13 @@ group :development, :test do
   gem 'rspec-rails'
   gem 'jettywrapper'
 end
+
+group :development, :test do
+  gem 'solr_wrapper', '>= 0.3'
+end
+
+gem 'rsolr', '~> 1.0.6'
+gem 'globalid'
+group :development, :test do
+  gem 'fcrepo_wrapper'
+end
