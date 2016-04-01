@@ -21,9 +21,11 @@ module FedoraMigrate
       end
       def migrate_structure
         ds = source.datastreams['structMetadata']
-        if ds
+        if ds && !ds.new?
           mover = FedoraMigrate::Works::StructureMover.new(source, target, options)
           report.content_datastreams << ContentDatastreamReport.new(ds, mover.migrate)
+        else
+          FedoraMigrate::Works::MembersMover.new(source, target, options).migrate
         end
       end
     end
