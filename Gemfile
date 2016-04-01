@@ -4,9 +4,7 @@ source 'https://rubygems.org'
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.2.1'
 
-gem 'hydra', '9.1.0'
-gem 'hydra-works'
-gem 'fedora-migrate'
+gem 'fedora-migrate', git: 'https://github.com/projecthydra-labs/fedora-migrate.git', branch: 'master'
 # Use sqlite3 as the database for Active Record
 gem 'sqlite3'
 # Use SCSS for stylesheets
@@ -50,6 +48,8 @@ end
 
 gem 'devise'
 gem 'devise-guests', '~> 0.3'
+gem 'sufia', git: 'https://github.com/projecthydra/sufia.git', branch: 'master'
+
 group :development, :test do
   gem 'rspec-rails'
   gem 'jettywrapper'
