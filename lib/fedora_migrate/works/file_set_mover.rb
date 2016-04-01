@@ -1,6 +1,6 @@
 module FedoraMigrate
   module Works
-    class FileSetMover < FedoraMigrate::ObjectMover
+    class FileSetMover < FedoraMigrate::Works::MappedObjectMover
       FITS_PARSER = Hydra::Works::Characterization::FitsDatastream
       ORIGINAL_FILE_DSID = 'content'
       PROVO_INVERSE = 'http://www.w3.org/ns/prov-o-inverses#'

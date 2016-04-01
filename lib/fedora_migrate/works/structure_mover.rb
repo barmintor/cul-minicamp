@@ -10,7 +10,7 @@ module FedoraMigrate
       end
       def migrate_struct_metadata
         ds = source.datastreams['structMetadata']
-        if ds
+        if ds & !ds.new?
           ns = {mets: "http://www.loc.gov/METS/"}
           structMetadata = Nokogiri::XML(ds.content)
           members = {}
@@ -19,6 +19,7 @@ module FedoraMigrate
           end
           members.keys.sort {|a,b| a.to_i <=> b.to_i}.each do |key|
             member_id = id_component(members[key])
+            GenericFile.find(id)
             member = ActiveFedora::Base.find(member_id)
             target.ordered_members << member
           end

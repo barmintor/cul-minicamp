@@ -6,6 +6,11 @@ module FedoraMigrate::Hooks
   # Called from FedoraMigrate::ObjectMover
   def before_object_migration
     # additional actions as needed
+    target.title = [source.label]
+    target.apply_depositor_metadata('migrator') if target.respond_to? :apply_depositor_metadata
+    target.edit_users = ['migrator']
+    target.discover_user_groups = ['public'] if target.respond_to? :discover_user_groups
+    target.read_user_groups = ['public'] if target.respond_to? :read_user_groups
   end
 
   # Called from FedoraMigrate::ObjectMover
@@ -14,11 +19,11 @@ module FedoraMigrate::Hooks
     if source.state
       case source.state
       when 'D'
-        target.state = ActiveFedora::RDF::Fcrepo::Model.Deleted
+        target.state = ActiveFedora::RDF::Fcrepo::Model.Deleted.to_s
       when 'I'
-        target.state = ActiveFedora::RDF::Fcrepo::Model.Inactive
+        target.state = ActiveFedora::RDF::Fcrepo::Model.Inactive.to_s
       else
-        target.state = ActiveFedora::RDF::Fcrepo::Model.Active
+        target.state = ActiveFedora::RDF::Fcrepo::Model.Active.to_s
       end
     end
     target.legacy_pid = source.pid

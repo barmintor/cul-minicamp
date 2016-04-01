@@ -1,6 +1,8 @@
 module FedoraMigrate
   module Works
     autoload :FileSetMover, 'fedora_migrate/works/file_set_mover'
+    autoload :MappedObjectMover, 'fedora_migrate/works/mapped_object_mover'
+    autoload :MappedTargetConstructor, 'fedora_migrate/works/mapped_target_constructor'
     autoload :MembersMover, 'fedora_migrate/works/members_mover'
     autoload :RelsExtDatastreamMover, 'fedora_migrate/works/rels_ext_datastream_mover'
     autoload :StructureMover, 'fedora_migrate/works/structure_mover'
